@@ -4,9 +4,13 @@ import User from "../models/user.model.js"
 
 export const sendConnectionRequest = async(req,res) => {
     try {
+        console.log("here");
+        
         const {userId} = req.params
-        const senderId = req.user._id
-
+        const senderId = req.user._id;
+        console.log("userId",userId);
+        console.log("senderid",senderId);
+        
         if(userId.toString() == senderId.toString()) return res.status(400).json({message: "you cant send a conn req to yourself"})
 
         if(req.user.connections.includes(userId)) return res.status(400).json({message: "you are already connected to this person"})
@@ -45,6 +49,9 @@ export const acceptConnectionRequest = async(req,res) => {
         if (connectionRequest.status != 'pending') return res.status(400).json({message: "you cant accept this request"})
 
         connectionRequest.status = 'accepted'
+
+        await User.findByIdAndUpdate(userId, {$addToSet: {connections: connectionRequest.sender._id}})
+        await User.findByIdAndUpdate(connectionRequest.sender._id, {$addToSet: {connections: userId}})
 
         await connectionRequest.save()
 

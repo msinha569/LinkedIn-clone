@@ -13,7 +13,7 @@ const connectionRequestSchema = new Schema({
         required: true
     },
     status: {
-        type: Boolean,
+        type: String,
         enum: ['pending','accepted','rejected'],
         default: 'pending'
     }

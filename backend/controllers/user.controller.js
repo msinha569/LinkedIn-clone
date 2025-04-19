@@ -27,7 +27,7 @@ export const getPublicProfile = async(req,res) => {
         const requiredUser = await User.findOne({username: req.params.username}).select('-password')
         if(!requiredUser) return res.status(400).json({message: "user not found"})
         
-        res.status(201).json(user)
+        res.status(201).json(requiredUser)
     } catch (error) {
         console.log("error fetching public profile:",error);
         res.status(500).json({message: "server error"})
@@ -51,9 +51,7 @@ export const updateProfile = async(req,res) => {
         
         const updatedData = {}
         
-        console.log("updates data:",updatedData);
-        console.log("req data:",req.body);
-        
+      
         for(const field of allowedFields) {
             if (req.body[field]){
                 updatedData[field] = req.body[field]

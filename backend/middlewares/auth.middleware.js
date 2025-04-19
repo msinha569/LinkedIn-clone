@@ -6,6 +6,7 @@ dotenv.config()
 
 export const protectRoute = async(req,res,next) => {
     try {
+        
         const token = req.cookies['jwt-linkedin']
         
         if(!token) return res.status(400).json({message: "no token found-you're not logged in"})
@@ -13,7 +14,8 @@ export const protectRoute = async(req,res,next) => {
         const decodedToken = await jwt.verify(token, process.env.JWT_SECRET)
         if(!decodedToken) return res.status(400).json({message: "unauthorized access- token not found"})
                 
-        console.log("here is the token:",decodedToken);
+           
+            
         const user = await User.findById(decodedToken.userId).select('-password')
         if(!user) return res.status(400).json({message: "user not found"})
 

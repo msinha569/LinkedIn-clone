@@ -6,7 +6,7 @@ import { sendCommentNotificationEmail } from "../emails/emailHandlers.js";
 
 export const getFeedPosts = async(req,res) => {
     try {
-        const posts = await Post.find({author: {$in: req.user.connections}})
+        const posts = await Post.find({author: {$in: [...req.user.connections, req.user._id]}})
         .populate("author","name username profilePicture headline")
         .populate("comments.user", "name profilePicture")
         .sort({createdAt: -1})
@@ -20,14 +20,16 @@ export const getFeedPosts = async(req,res) => {
 
 export const createPosts = async(req,res) => {
     try {
+        
         const {content,image} = req.body
+        if(!content) return res.status(400).json({message: "content is required. Only image cant be uploaded."})
         let newPost
         if(image){
             const imageURL = await cloudinary.uploader.upload(image)
             newPost = await Post({
                 author: req.user._id,
                 content,
-                image: imageURL
+                image: imageURL.secure_url
             })
         }else{
             newPost = await Post({
@@ -84,6 +86,7 @@ export const getPostById = async(req,res) => {
 
 export const createComment = async(req,res) => {
     try {
+        
         const {content} = req.body
         const postId = req.params.id
         const post = await Post.findByIdAndUpdate(postId, {
@@ -100,16 +103,17 @@ export const createComment = async(req,res) => {
                 relatedUser: req.user._id,
                 relatedPost: postId
             })
-        }
+        
 
         await newNotification.save()
 
         try {
+            const postUrl = `${process.env.CLIENT_URL}/post/${post._id}`
             await sendCommentNotificationEmail(post.author.email,post.author.name,req.user._id, postUrl,content) //
         } catch (error) {
             console.log("error in sending email:",error);
             
-        }
+        }}
 
         res.status(201).json(post)
     } catch (error) {
@@ -123,9 +127,9 @@ export const likePost = async(req,res) => {
         const postId = req.params.id
         const post = await Post.findById(postId)
         const userId = req.user._id
-
+        
         if(post.likes.includes(userId)){
-            post.likes.filter(id => id.toString() != userId)
+            post.likes=post.likes.filter(id => id.toString() != userId)
         }else{
             post.likes.push(userId)
 
@@ -139,6 +143,8 @@ export const likePost = async(req,res) => {
                 await newNotification.save()
             }
         }
+        await post.save()
+        res.status(201).json(post)
     } catch (error) {
         console.log("error in likepost controller");
         res.status(500).json({message: "server error"})

@@ -5,7 +5,7 @@ import { acceptConnectionRequest, getConnectionRequests, getConnectionStatus, ge
 
 export const router = Router()
 
-router.post("/request/:userId", protectRoute, sendConnectionRequest);
+router.post("/requests/:userId", protectRoute, sendConnectionRequest);
 router.put("/accept/:requestId", protectRoute, acceptConnectionRequest);
 router.put("/reject/:requestId", protectRoute, rejectConnectionRequest);
 // Get all connection requests for the current user

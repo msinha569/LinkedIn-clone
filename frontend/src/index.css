@@ -10,7 +10,7 @@
   --color-primary: #0A66C2; /* LinkedIn Blue */
   --color-primary-content: #FFFFFF;
 
-  --color-secondary: #F3F2EF; /* LinkedIn Background Gray */
+  --color-secondary: #FFFFFF; /* LinkedIn Background Gray */
   --color-secondary-content: #0A66C2;
 
   --color-accent: #01764A; /* LinkedIn Green */
@@ -19,7 +19,7 @@
   --color-neutral: #191919; /* Dark Gray */
   --color-neutral-content: #FFFFFF;
 
-  --color-base-100: #FFFFFF; /* Main Background */
+  --color-base-100: #F3F2EF; /* Main Background */
   --color-base-200: #F3F2EF;
   --color-base-300: #E5E5E5;
   --color-base-content: #000000;

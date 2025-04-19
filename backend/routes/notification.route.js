@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { protectRoute } from "../middlewares/auth.middleware.js";
-import { deleteNotification, getUserNotifications, markNotificationAsRead } from "../controllers/notification.controller";
+import { deleteNotification, getUserNotifications, markNotificationAsRead } from "../controllers/notification.controller.js";
 
 const router = Router()
 

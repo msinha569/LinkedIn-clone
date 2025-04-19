@@ -1,38 +1,58 @@
 import React from 'react'
 import Layout from './components/layout'
-import { Route, Routes } from 'react-router-dom'
-import HomePage from './pages/auth/HomePage'
+import {  Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 import SignupPage from './pages/auth/SignupPage'
 import LoginPage from './pages/auth/LoginPage'
-import { useQuery } from '@tanstack/react-query'
-import { axiosInstance } from './lib/axios'
-import toast from 'react-hot-toast'
+
+import { ProtectedRoute, PublicRoute } from './utils/RouteSetup'
+import NotificationsPage from './pages/NotificationsPage'
+import NetworkPage from './pages/NetworkPage'
+import PostPage from './pages/PostPage'
+import ProfilePage from './pages/ProfilePage'
 
 const App = () => {
   
-  const {data: authUser} = useQuery({
-    queryFn: async() => {
-      try {
-        const response = await axiosInstance.get('/auth/me')
-        return response.data
-      } catch (error) {
-        if (error.response && error.response.status===401) return null;
-  
-        toast.error(error.response.data.message || 'Something went wrong')
-      }
-    },
-    queryKey: ['authUser']
-  })
-  console.log(authUser);
-  
   return (
-    <Layout>
-      <Routes>
-        <Route path='/' element={<HomePage/>}/>
-        <Route path='/signup' element={<SignupPage/>}/>
-        <Route path='/login' element={<LoginPage/>}/>
-      </Routes>
-    </Layout>
+        <Layout>
+          <Routes>
+            <Route path='/' element={
+            <ProtectedRoute>  
+              <HomePage/>
+            </ProtectedRoute>
+            }/>
+            <Route path='/network' element={
+            <ProtectedRoute>  
+              <NetworkPage/>
+            </ProtectedRoute>
+            }/>
+            <Route path='/post/:postId' element={
+            <ProtectedRoute>  
+              <PostPage/>
+            </ProtectedRoute>
+            }/>
+            <Route path='/profile/:username' element={
+            <ProtectedRoute>  
+              <ProfilePage/>
+            </ProtectedRoute>
+            }/>
+            <Route path='/notifications' element={
+            <ProtectedRoute>  
+              <NotificationsPage/>
+            </ProtectedRoute>
+            }/>
+            <Route path='/signup' element={
+              <PublicRoute>
+                <SignupPage/>
+              </PublicRoute>
+            }/>
+            <Route path='/login' element={
+              <PublicRoute>
+                <LoginPage/>
+              </PublicRoute>
+            }/>
+          </Routes>
+        </Layout>
   )
 }
 
