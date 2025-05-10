@@ -2,6 +2,8 @@ import User from "../models/user.model.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { sendWelcomeEmail } from "../emails/emailHandlers.js"
+
+
 export const signup = async(req,res) => {
 try {
         const {name, username, email, password} = req.body
@@ -26,14 +28,8 @@ try {
         })
         await user.save()
     
-        const token = jwt.sign({
-            userId: user._id
-        },
-            process.env.JWT_SECRET
-        ,{
-            expiresIn: "3d"
-        })
-    
+        const token = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
         const options = {
             httpOnly: true,
             maxAge: 3*24*60*60*1000,
@@ -41,8 +37,9 @@ try {
             secure:process.env.NODE_ENV==="production"
         }
     
-        res.
-        cookie("jwt-linkedin",token,options)
+        res
+        .cookie("refresh-linkedin",refreshToken,options)
+        .cookie("jwt-linkedin",token,options)
         .status(201)
         .json({message:"user created successfully"})
 
@@ -70,14 +67,9 @@ export const login = async(req,res) => {
         const checkPassword = await bcrypt.compare(password,existingUser.password)
         if(!checkPassword) return res.status(400).json({message: "password is incorrect"})
         
-        const token = jwt.sign({
-            userId: existingUser._id
-        },
-            process.env.JWT_SECRET,
-        {
-            expiresIn: "3d"
-        })
-    
+        const token = existingUser.generateAccessToken()
+        const refreshToken = existingUser.generateRefreshToken()
+
         const options={
             httpOnly: true,
             sameSite: "strict",
@@ -85,7 +77,11 @@ export const login = async(req,res) => {
             maxAge: 3*24*60*60*1000
         }
     
-        res.cookie('jwt-linkedin',token,options).status(201).json({message: "loggedin successfully"})
+        res
+        .cookie('jwt-linkedin',token,options)
+        .cookie('refresh-linkedin',refreshToken,options)
+        .status(201).
+        json({message: "loggedin successfully"})
     } catch (error) {
         console.log("error while logging in:",error);
         res.status(500).json({message: "something unexpected happened while logging in"})
@@ -106,5 +102,43 @@ export const getUser = async(req,res) => {
     } catch (error) {
         console.log("error while fetching user info:",error);
         res.status(500).json({message: "error in getting user info"})
+    }
+}
+
+export const refreshAccessToken = async(req,res) => {
+    console.log("refresh is trying");
+    
+    try {
+        const incomingRefreshToken = req.cookies['refresh-linkedin'] || req.body['refresh-linkedin']
+        if (!incomingRefreshToken) return res.status(400).json({message: 'user cant persist session'})
+
+        const decodedToken = jwt.verify(incomingRefreshToken, process.env.JWT_SECRET)
+
+        const user = await User.findById(decodedToken.userId)
+        if (!user) return res.status(400).json({message: 'refreshtoken is invalid'})
+        if (incomingRefreshToken !== user.refreshToken) {
+            return res.status(401).json({ message: "Refresh token mismatch" });
+        }
+            
+        
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        const token = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
+
+        user.refreshToken = refreshToken
+        await user.save()
+        return res
+        .status(200)
+        .cookie('jwt-linkedin',token,options)
+        .cookie('refresh-linkedin',refreshToken,options)
+        .json({message: 'token refreshed successfully'})
+
+    } catch (error) {
+        console.log("Error in refreshAccessToken controller",error);
+        res.status(500).json({message: "Server error"})
     }
 }

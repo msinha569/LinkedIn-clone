@@ -12,12 +12,11 @@ export const useAuth = () => {
 
              return response.data
            } catch (err) {
-            console.log("ut");
             
-            if (err.response?.status === 401) return null;
+            if (err.response?.status === 401) {
 				toast.error(err.response?.data?.message || "Something went wrong");
 				return null;
-           }
+           }}
         },
         staleTime: 5 * 60 * 1000, // ✅ consider fresh for 5 mins
         cacheTime: 30 * 60 * 1000, // ✅ keep in memory for 30 mins if unused
