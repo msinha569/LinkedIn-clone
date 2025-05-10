@@ -26,10 +26,11 @@ try {
             username,
             password:hashedPassword
         })
-        await user.save()
-    
+        
         const token = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
+        user.refreshToken = refreshToken
+        await user.save()
         const options = {
             httpOnly: true,
             maxAge: 3*24*60*60*1000,
@@ -69,7 +70,8 @@ export const login = async(req,res) => {
         
         const token = existingUser.generateAccessToken()
         const refreshToken = existingUser.generateRefreshToken()
-
+        existingUser.refreshToken = refreshToken
+        await existingUser.save()
         const options={
             httpOnly: true,
             sameSite: "strict",
@@ -89,7 +91,28 @@ export const login = async(req,res) => {
 }
 export const logout = async(req,res) => {
     try {
-        res.clearCookie('jwt-linkedin').status(201).json({message:"user logged out successfully"})
+        const token = req.cookies['jwt-linkedin']
+        if(!token) return res.status(400).json({message: "user already logged out"})
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        await User.findByIdAndUpdate(decodedToken.userId,{
+            $set: {
+                refreshToken: undefined
+            }
+        },{
+            new: true
+        })
+        const options={
+            httpOnly: true,
+            sameSite: "strict",
+            secure:process.env.NODE_ENV==="production",
+            maxAge: 3*24*60*60*1000
+        }
+    
+        res
+        .clearCookie('refresh-linkedin',options)
+        .clearCookie('jwt-linkedin',options)
+        .status(201)
+        .json({message:"user logged out successfully"})
     } catch (error) {
         console.log("error while logging out",error);
         res.status(500).json({message: "error while logging out"})
@@ -105,9 +128,7 @@ export const getUser = async(req,res) => {
     }
 }
 
-export const refreshAccessToken = async(req,res) => {
-    console.log("refresh is trying");
-    
+export const refreshAccessToken = async(req,res) => {    
     try {
         const incomingRefreshToken = req.cookies['refresh-linkedin'] || req.body['refresh-linkedin']
         if (!incomingRefreshToken) return res.status(400).json({message: 'user cant persist session'})
@@ -120,17 +141,19 @@ export const refreshAccessToken = async(req,res) => {
             return res.status(401).json({ message: "Refresh token mismatch" });
         }
             
-        
-        const options = {
+        const options={
             httpOnly: true,
-            secure: true
+            sameSite: "strict",
+            secure:process.env.NODE_ENV==="production",
+            maxAge: 3*24*60*60*1000
         }
-
+    
         const token = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
 
         user.refreshToken = refreshToken
         await user.save()
+
         return res
         .status(200)
         .cookie('jwt-linkedin',token,options)

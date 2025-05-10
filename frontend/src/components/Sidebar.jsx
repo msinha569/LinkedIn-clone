@@ -21,7 +21,7 @@ const Sidebar = ({user}) => {
               {user?.headline || 'user specialization'}
                 </div>
                 <div>
-                  {user?.connections.length || 'connections'} connections
+                  {user?.connections.length} connections
                 </div>
             </div>
         </div>

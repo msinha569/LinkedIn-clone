@@ -9,14 +9,16 @@ export const useAuth = () => {
         queryFn: async() => {
            try {
              const response = await axiosInstance.get('/auth/me')
-
-             return response.data
+            console.log(response.data);
+             return response.data || null
            } catch (err) {
+            console.log(err.response.data);
             
             if (err.response?.status === 401) {
 				toast.error(err.response?.data?.message || "Something went wrong");
 				return null;
            }}
+           return null
         },
         staleTime: 5 * 60 * 1000, // ✅ consider fresh for 5 mins
         cacheTime: 30 * 60 * 1000, // ✅ keep in memory for 30 mins if unused

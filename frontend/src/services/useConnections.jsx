@@ -51,8 +51,10 @@ export const useConnections = (userId) => {
         },
         onSuccess: () => {
             toast.success("Connection request accepted")
-            queryClient.invalidateQueries({queryKey: ['connectionStatus'], userId})
-        },
+            queryClient.invalidateQueries(["connectionRequests"]);         
+            queryClient.invalidateQueries(["connections"]);                
+            queryClient.invalidateQueries(["connectionStatus", userId])
+       },
         onError: (error) => {
             toast.error(error.data.response.message || 'Some error occured')
         }
@@ -64,7 +66,9 @@ export const useConnections = (userId) => {
         },
         onSuccess: () => {
             toast.success("Connection request rejected")
-            queryClient.invalidateQueries({queryKey: ['connectionStatus'], userId})
+            queryClient.invalidateQueries(["connectionRequests"]);        
+            queryClient.invalidateQueries(["connections"]);                
+            queryClient.invalidateQueries(["connectionStatus", userId]); 
         },
         onError: (error) => {
             toast.error(error.data.response.message || 'Some error occured')
@@ -76,6 +80,29 @@ export const useConnections = (userId) => {
 		queryFn: () => axiosInstance.get("/connections"),
 	});
 
-    
-    return {connectionRequests,unreadConnectionRequestsCount,rejectRequest,acceptRequest,sendConnectionRequest,connectionStatus,refetchConnectionStatus,connections}
+    const { mutate: removeConnection } = useMutation({
+        mutationFn: async (userId) => {
+            await axiosInstance.delete(`/connections/${userId}`)
+        },
+        onSuccess: () => {
+            toast.success("Connection removed successfully")
+            queryClient.invalidateQueries({queryKey: ['connections']})
+        },
+        onError: (error) => {
+            toast.error(error.data.response.message || 'Some error occured')
+        }
+
+    })
+
+    return {
+      connectionRequests,
+      unreadConnectionRequestsCount,
+      rejectRequest,
+      acceptRequest,
+      sendConnectionRequest,
+      connectionStatus,
+      refetchConnectionStatus,
+      connections,
+      removeConnection,
+    };
 }

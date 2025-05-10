@@ -55,7 +55,7 @@ export const acceptConnectionRequest = async(req,res) => {
 
         await connectionRequest.save()
 
-        res.json(201).json({message: "connection accepted successfully"})
+        res.status(201).json({message: "connection accepted successfully"})
 
         try {
             const senderEmail = connectionRequest.sender.email

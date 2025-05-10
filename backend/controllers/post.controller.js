@@ -94,7 +94,7 @@ export const createComment = async(req,res) => {
                 comments: {user: req.user._id, content}
             }
         },{new:true})
-        .populate('author','name username headline profilePicture')
+        .populate('author','name email username headline profilePicture')
 
         if(post.author._id.toString() != req.user._id.toString()){   // ._id cuz here author is populated so its a full user obj or else its a objID
             const newNotification =  new Notification({
@@ -108,8 +108,14 @@ export const createComment = async(req,res) => {
         await newNotification.save()
 
         try {
-            const postUrl = `${process.env.CLIENT_URL}/post/${post._id}`
-            await sendCommentNotificationEmail(post.author.email,post.author.name,req.user._id, postUrl,content) //
+          const postUrl = `${process.env.CLIENT_URL}/post/${post._id}`;
+          await sendCommentNotificationEmail(
+            post.author.email,
+            post.author.name,
+            req.user.name,  
+            content,        
+            postUrl  
+          ); 
         } catch (error) {
             console.log("error in sending email:",error);
             

@@ -10,6 +10,8 @@ import { useAuth } from "../services/useAuth";
 const NetworkPage = () => {
     const {authUser} = useAuth()
     const {connections, connectionRequests} = useConnections()
+	console.log(connectionRequests);
+	
 	return (
 		<div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
 			<div className='col-span-1 lg:col-span-1'>
@@ -19,11 +21,11 @@ const NetworkPage = () => {
 				<div className='bg-secondary rounded-lg shadow p-6 mb-6'>
 					<h1 className='text-2xl font-bold mb-6'>My Network</h1>
 
-					{connectionRequests?.data?.length > 0 ? (
+					{connectionRequests.length > 0 ? (
 						<div className='mb-8'>
 							<h2 className='text-xl font-semibold mb-2'>Connection Request</h2>
 							<div className='space-y-4'>
-								{connectionRequests.data.map((request) => (
+								{connectionRequests.map((request) => (
 									<FriendRequest key={request.id} request={request} />
 								))}
 							</div>
