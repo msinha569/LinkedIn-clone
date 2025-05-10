@@ -23,7 +23,7 @@ export const useConnections = (userId) => {
     })
     const unreadConnectionRequestsCount = connectionRequests.length
 
-    const {data: connectionStatus} = useQuery({
+    const {data: connectionStatus, refetch:refetchConnectionStatus} = useQuery({
         queryKey: ['connectionStatus',userId],
         queryFn: async() => {
             return await axiosInstance.get(`/connections/status/${userId}`)
@@ -77,5 +77,5 @@ export const useConnections = (userId) => {
 	});
 
     
-    return {connectionRequests,unreadConnectionRequestsCount,rejectRequest,acceptRequest,sendConnectionRequest,connectionStatus,connections}
+    return {connectionRequests,unreadConnectionRequestsCount,rejectRequest,acceptRequest,sendConnectionRequest,connectionStatus,refetchConnectionStatus,connections}
 }

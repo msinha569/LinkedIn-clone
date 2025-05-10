@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-const AboutSection = ({ userData, isOwnProfile, onSave }) => {
-	const [isEditing, setIsEditing] = useState(false);
+const AboutSection = ({ userData, isOwnProfile, onSave, isEditing }) => {
 	const [about, setAbout] = useState(userData.about || "");
 
 	const handleSave = () => {
-		setIsEditing(false);
 		onSave({ about });
 	};
 	return (
@@ -32,12 +30,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 					) : (
 						<>
 							<p>{userData.about}</p>
-							<button
-								onClick={() => setIsEditing(true)}
-								className='mt-2 text-primary hover:text-primary-dark transition duration-300'
-							>
-								Edit
-							</button>
+							
 						</>
 					)}
 				</>

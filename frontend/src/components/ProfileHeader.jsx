@@ -5,57 +5,17 @@ import { toast } from "react-hot-toast";
 
 import { Camera, Clock, MapPin, UserCheck, UserPlus, X } from "lucide-react";
 import { useAuth } from "../services/useAuth";
+import { useConnections } from "../services/useConnections";
 
-const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
-	const [isEditing, setIsEditing] = useState(false);
+const ProfileHeader = ({ userData, onSave, isOwnProfile, isEditing, setIsEditing }) => {
 	const [editedData, setEditedData] = useState({});
 	const queryClient = useQueryClient();
 
     const authUser = useAuth()
-    
-	const { data: connectionStatus, refetch: refetchConnectionStatus } = useQuery({
-		queryKey: ["connectionStatus", userData._id],
-		queryFn: () => axiosInstance.get(`/connections/status/${userData._id}`),
-		enabled: !isOwnProfile,
-	});
 
 	const isConnected = userData.connections.some((connection) => connection === authUser._id);
 
-	const { mutate: sendConnectionRequest } = useMutation({
-		mutationFn: (userId) => axiosInstance.post(`/connections/request/${userId}`),
-		onSuccess: () => {
-			toast.success("Connection request sent");
-			refetchConnectionStatus();
-			queryClient.invalidateQueries(["connectionRequests"]);
-		},
-		onError: (error) => {
-			toast.error(error.response?.data?.message || "An error occurred");
-		},
-	});
-
-	const { mutate: acceptRequest } = useMutation({
-		mutationFn: (requestId) => axiosInstance.put(`/connections/accept/${requestId}`),
-		onSuccess: () => {
-			toast.success("Connection request accepted");
-			refetchConnectionStatus();
-			queryClient.invalidateQueries(["connectionRequests"]);
-		},
-		onError: (error) => {
-			toast.error(error.response?.data?.message || "An error occurred");
-		},
-	});
-
-	const { mutate: rejectRequest } = useMutation({
-		mutationFn: (requestId) => axiosInstance.put(`/connections/reject/${requestId}`),
-		onSuccess: () => {
-			toast.success("Connection request rejected");
-			refetchConnectionStatus();
-			queryClient.invalidateQueries(["connectionRequests"]);
-		},
-		onError: (error) => {
-			toast.error(error.response?.data?.message || "An error occurred");
-		},
-	});
+	const {rejectRequest,acceptRequest,sendConnectionRequest,refetchConnectionStatus,connectionStatus} = useConnections(userData._id)
 
 	const { mutate: removeConnection } = useMutation({
 		mutationFn: (userId) => axiosInstance.delete(`/connections/${userId}`),
@@ -71,12 +31,14 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 
 	const getConnectionStatus = useMemo(() => {
 		if (isConnected) return "connected";
-		if (!isConnected) return "not_connected";
+		//if (!isConnected) return "not_connected";
 		return connectionStatus?.data?.status;
 	}, [isConnected, connectionStatus]);
 
 	const renderConnectionButton = () => {
 		const baseClass = "text-white py-2 px-4 rounded-full transition duration-300 flex items-center justify-center";
+		console.log(getConnectionStatus);
+		
 		switch (getConnectionStatus) {
 			case "connected":
 				return (
@@ -175,7 +137,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 				<div className='relative -mt-20 mb-4'>
 					<img
 						className='w-32 h-32 rounded-full mx-auto object-cover'
-						src={editedData.profilePicture || userData.profilePicture || "/avatar.png"}
+						src={editedData?.profilePicture || userData?.profilePicture || "/avatar.png"}
 						alt={userData.name}
 					/>
 

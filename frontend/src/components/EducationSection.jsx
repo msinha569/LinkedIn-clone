@@ -1,8 +1,7 @@
 import { School, X } from "lucide-react";
 import { useState } from "react";
 
-const EducationSection = ({ userData, isOwnProfile, onSave }) => {
-	const [isEditing, setIsEditing] = useState(false);
+const EducationSection = ({ userData, isOwnProfile, onSave, isEditing }) => {
 	const [educations, setEducations] = useState(userData.education || []);
 	const [newEducation, setNewEducation] = useState({
 		school: "",
@@ -29,7 +28,6 @@ const EducationSection = ({ userData, isOwnProfile, onSave }) => {
 
 	const handleSave = () => {
 		onSave({ education: educations });
-		setIsEditing(false);
 	};
 
 	return (
@@ -95,7 +93,7 @@ const EducationSection = ({ userData, isOwnProfile, onSave }) => {
 
 			{isOwnProfile && (
 				<>
-					{isEditing ? (
+					{isEditing && (
 						<button
 							onClick={handleSave}
 							className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark
@@ -103,14 +101,7 @@ const EducationSection = ({ userData, isOwnProfile, onSave }) => {
 						>
 							Save Changes
 						</button>
-					) : (
-						<button
-							onClick={() => setIsEditing(true)}
-							className='mt-4 text-primary hover:text-primary-dark transition duration-300'
-						>
-							Edit Education
-						</button>
-					)}
+					) }
 				</>
 			)}
 		</div>

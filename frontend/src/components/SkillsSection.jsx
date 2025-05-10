@@ -1,8 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
-const SkillsSection = ({ userData, isOwnProfile, onSave }) => {
-	const [isEditing, setIsEditing] = useState(false);
+const SkillsSection = ({ userData, isOwnProfile, onSave, isEditing }) => {
 	const [skills, setSkills] = useState(userData.skills || []);
 	const [newSkill, setNewSkill] = useState("");
 
@@ -19,7 +18,6 @@ const SkillsSection = ({ userData, isOwnProfile, onSave }) => {
 
 	const handleSave = () => {
 		onSave({ skills });
-		setIsEditing(false);
 	};
 
 	return (
@@ -61,19 +59,12 @@ const SkillsSection = ({ userData, isOwnProfile, onSave }) => {
 
 			{isOwnProfile && (
 				<>
-					{isEditing ? (
+					{isEditing && (
 						<button
 							onClick={handleSave}
 							className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
 						>
 							Save Changes
-						</button>
-					) : (
-						<button
-							onClick={() => setIsEditing(true)}
-							className='mt-4 text-primary hover:text-primary-dark transition duration-300'
-						>
-							Edit Skills
 						</button>
 					)}
 				</>

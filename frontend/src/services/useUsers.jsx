@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { axiosInstance } from "../lib/axios"
+import toast from "react-hot-toast"
 
 export const useUsers = (username) => {
 
@@ -26,8 +27,8 @@ export const useUsers = (username) => {
 
 
     const { mutate: updateProfile } = useMutation({
-        mutationFn: async (updatedData) => {
-            await axiosInstance.put("/users/profile", updatedData);
+        mutationFn: async (updatedData) => {   
+            return await axiosInstance.put("/users/profile", updatedData);
         },
         onSuccess: () => {
             toast.success("Profile updated successfully");

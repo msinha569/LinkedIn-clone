@@ -2,8 +2,7 @@ import { Briefcase, X } from "lucide-react";
 import { useState } from "react";
 import { formatDate } from "../utils/dateUtils";
 
-const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
-	const [isEditing, setIsEditing] = useState(false);
+const ExperienceSection = ({ userData, isOwnProfile, onSave, isEditing }) => {
 	const [experiences, setExperiences] = useState(userData.experience || []);
 	const [newExperience, setNewExperience] = useState({
 		title: "",
@@ -35,7 +34,6 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 
 	const handleSave = () => {
 		onSave({ experience: experiences });
-		setIsEditing(false);
 	};
 
 	const handleCurrentlyWorkingChange = (e) => {
@@ -129,21 +127,14 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 
 			{isOwnProfile && (
 				<>
-					{isEditing ? (
+					{isEditing && (
 						<button
 							onClick={handleSave}
 							className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
 						>
 							Save Changes
 						</button>
-					) : (
-						<button
-							onClick={() => setIsEditing(true)}
-							className='mt-4 text-primary hover:text-primary-dark transition duration-300'
-						>
-							Edit Experiences
-						</button>
-					)}
+					) }
 				</>
 			)}
 		</div>
