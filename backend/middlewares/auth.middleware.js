@@ -6,7 +6,7 @@ dotenv.config()
 
 export const protectRoute = async(req,res,next) => {
     try {
-        
+        console.log("Auth middleware triggered on route:", req.originalUrl);
         const token = req.cookies['jwt-linkedin']
         
         if(!token) return res.status(400).json({message: "no token found-you're not logged in"})

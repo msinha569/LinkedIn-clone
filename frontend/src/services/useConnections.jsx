@@ -86,7 +86,9 @@ export const useConnections = (userId) => {
         },
         onSuccess: () => {
             toast.success("Connection removed successfully")
-            queryClient.invalidateQueries({queryKey: ['connections']})
+            queryClient.invalidateQueries(["connections"])
+            queryClient.invalidateQueries(["connectionStatus", userId])
+            queryClient.invalidateQueries(["connectionRequests"])
         },
         onError: (error) => {
             toast.error(error.data.response.message || 'Some error occured')
