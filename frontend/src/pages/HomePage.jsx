@@ -14,7 +14,7 @@ const HomePage = () => {
   const {recommendedUsers} = useUsers()
   
   return (
-		<div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
+		<div className='flex justify-center lg:grid lg:grid-cols-4 gap-6'>
 			<div className='hidden lg:block lg:col-span-1'>
 				<Sidebar user={authUser} />
 			</div>
