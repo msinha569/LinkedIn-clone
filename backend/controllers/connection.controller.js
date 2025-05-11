@@ -133,6 +133,13 @@ export const removeConnection = async(req,res) => {
         await User.findByIdAndUpdate(myId, {$pull: { connections: userId}})
         await User.findByIdAndUpdate(userId, {$pull: { connections: myId}})
 
+        await ConnectionRequest.findOneAndDelete({
+            $or: [
+                { sender: myId, recipient: userId },
+                { sender: userId, recipient: myId }
+            ]
+        })
+
         res.status(201).json({message: "connection removed successfully"})  // TODO - remove that connection from connection model as well
     } catch (error) {
         console.log("error in connections controller: ",error);
