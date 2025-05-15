@@ -7,7 +7,7 @@ const FriendRequest = ({ request }) => {
     const {acceptRequest:acceptConnectionRequest, rejectRequest:rejectConnectionRequest} = useConnections()
 
 	return (
-		<div className='bg-white rounded-lg shadow p-4 flex items-center justify-between transition-all hover:shadow-md'>
+		<div className='bg-white rounded-lg shadow p-1 md:p-4 flex items-center justify-between transition-all hover:shadow-md'>
 			<div className='flex md:items-center  md:gap-4'>
 				<Link to={`/profile/${request.sender.username}`}>
 					<img
@@ -25,7 +25,7 @@ const FriendRequest = ({ request }) => {
 				</div>
 			</div>
 
-			<div className='space-x-2'>
+			<div className='space-x-2 space-y-2'>
 				<button
 					className='bg-primary text-white px-1 md:px-4 py-2 rounded-md hover:bg-primary-dark transition-colors'
 					onClick={() => acceptConnectionRequest(request._id)}
