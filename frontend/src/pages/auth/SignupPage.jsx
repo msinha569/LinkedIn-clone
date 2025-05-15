@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import SignUpForm from "../../components/auth/SignUpForm";
+import SignupForm from "../../components/auth/SignupForm";
 
 const SignUpPage = () => {
 	return (
@@ -12,7 +12,7 @@ const SignUpPage = () => {
 			</div>
 			<div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md shadow-md'>
 				<div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
-					<SignUpForm />
+					<SignupForm />
 
 					<div className='mt-6'>
 						<div className='relative'>
