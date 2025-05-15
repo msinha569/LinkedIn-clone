@@ -8,12 +8,12 @@ const FriendRequest = ({ request }) => {
 
 	return (
 		<div className='bg-white rounded-lg shadow p-4 flex items-center justify-between transition-all hover:shadow-md'>
-			<div className='flex items-center gap-4'>
+			<div className='flex md:items-center  md:gap-4'>
 				<Link to={`/profile/${request.sender.username}`}>
 					<img
 						src={request.sender.profilePicture || "/avatar.png"}
 						alt={request.name}
-						className='w-16 h-16 rounded-full object-cover'
+						className='w-10 h-8 md:w-16 mt-2 mr-2 md:h-16 rounded-full  md:object-cover'
 					/>
 				</Link>
 
@@ -27,13 +27,13 @@ const FriendRequest = ({ request }) => {
 
 			<div className='space-x-2'>
 				<button
-					className='bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors'
+					className='bg-primary text-white px-1 md:px-4 py-2 rounded-md hover:bg-primary-dark transition-colors'
 					onClick={() => acceptConnectionRequest(request._id)}
 				>
 					Accept
 				</button>
 				<button
-					className='bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors'
+					className='bg-gray-200 text-gray-800 px-2 md:px-4 py-2 rounded-md hover:bg-gray-300 transition-colors'
 					onClick={() => rejectConnectionRequest(request._id)}
 				>
 					Reject
