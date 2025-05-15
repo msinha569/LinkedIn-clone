@@ -17,7 +17,7 @@ const NetworkPage = () => {
 			<div className='col-span-1 lg:col-span-1 w-fit   lg:w-full'>
 				<Sidebar user={authUser} />
 			</div>
-			<div className='col-span-1 lg:col-span-3'>
+			<div className='col-span-1 lg:col-span-3 min-w-[60vw]'>
 				<div className='bg-secondary rounded-lg shadow p-12 mb-6'>
 					<h1 className='text-2xl font-bold mb-6'>My Network</h1>
 

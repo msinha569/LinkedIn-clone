@@ -16,14 +16,25 @@ const PORT = process.env.PORT || 5000
 
 connectDB()
 
-if (process.env.NODE_ENV !== "production") {
-	app.use(
-		cors({
-			origin: "http://localhost:5173",
-			credentials: true,
-		})
-	);
-}
+const allowedOrigins = [
+	"http://localhost:5173", // Vite default
+	"http://localhost:5174", // Your current dev port
+	"https://linkedin.mksinha.online", // Your production frontend
+];
+
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			if (!origin) return callback(null, true); // allow mobile/postman
+			if (allowedOrigins.includes(origin)) {
+				return callback(null, true);
+			} else {
+				return callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+	})
+);
 
 
 
