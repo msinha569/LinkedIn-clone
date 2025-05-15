@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = "http://linkedin.mksinha.online/api/v1"
+const baseURL = "http://linkedin-b.mksinha.online/api/v1"
 export const axiosInstance = axios.create({
     baseURL: baseURL,
     withCredentials: true
