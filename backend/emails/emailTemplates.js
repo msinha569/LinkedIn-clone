@@ -35,7 +35,7 @@ export function createWelcomeEmailTemplate(name, profileUrl) {
 <body style="margin:0;padding:0;font-family:Arial,sans-serif;color:#333;">
   <div style="max-width:600px;margin:auto;background:#f9f9f9;">
     <div style="background:linear-gradient(to right,#0077B5,#00A0DC);padding:30px;text-align:center;border-radius:10px 10px 0 0;">
-      <img src="https://img.freepik.com/premium-vector/linkedin-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
+      <img src="https://img.freepik.com/premium-vector/unlinked-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
       <h1 style="color:#fff;margin:20px 0 0;">Welcome to UnLinked!</h1>
     </div>
     <div class="container" style="background:#fff;padding:30px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
@@ -95,7 +95,7 @@ export const createConnectionAcceptedEmailTemplate = (
 <body style="margin:0;padding:0;font-family:Arial,sans-serif;color:#333;">
   <div style="max-width:600px;margin:auto;background:#f9f9f9;">
     <div style="background:linear-gradient(to right,#0077B5,#00A0DC);padding:30px;text-align:center;border-radius:10px 10px 0 0;">
-      <img src="https://img.freepik.com/premium-vector/linkedin-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
+      <img src="https://img.freepik.com/premium-vector/unlinked-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
       <h1 style="color:#fff;margin:20px 0 0;">Connection Accepted!</h1>
     </div>
     <div class="container" style="background:#fff;padding:30px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
@@ -154,7 +154,7 @@ export const createCommentNotificationEmailTemplate = (
 <body style="margin:0;padding:0;font-family:Arial,sans-serif;color:#333;">
   <div style="max-width:600px;margin:auto;background:#f9f9f9;">
     <div style="background:linear-gradient(to right,#0077B5,#00A0DC);padding:30px;text-align:center;border-radius:10px 10px 0 0;">
-      <img src="https://img.freepik.com/premium-vector/linkedin-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
+      <img src="https://img.freepik.com/premium-vector/unlinked-logo_578229-227.jpg" alt="UnLinked Logo" style="width:100px;max-width:150px;border-radius:10px;">
       <h1 style="color:#fff;margin:20px 0 0;">New Comment on Your Post</h1>
     </div>
     <div class="container" style="background:#fff;padding:30px;box-shadow:0 4px 10px rgba(0,0,0,.1);">

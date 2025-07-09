@@ -2,18 +2,18 @@
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-  name: "linkedin";
+  name: "unlinked";
   default: true; /* Optional: set as default theme */
   prefersdark: false;
   color-scheme: light;
 
-  --color-primary: #0A66C2; /* LinkedIn Blue */
+  --color-primary: #0A66C2; /* unlinked Blue */
   --color-primary-content: #FFFFFF;
 
-  --color-secondary: #FFFFFF; /* LinkedIn Background Gray */
+  --color-secondary: #FFFFFF; /* unlinked Background Gray */
   --color-secondary-content: #0A66C2;
 
-  --color-accent: #01764A; /* LinkedIn Green */
+  --color-accent: #01764A; /* unlinked Green */
   --color-accent-content: #FFFFFF;
 
   --color-neutral: #191919; /* Dark Gray */

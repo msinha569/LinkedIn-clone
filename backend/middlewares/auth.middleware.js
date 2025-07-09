@@ -7,7 +7,7 @@ dotenv.config()
 export const protectRoute = async(req,res,next) => {
     try {
         console.log("Auth middleware triggered on route:", req.originalUrl);
-        const token = req.cookies['jwt-linkedin']
+        const token = req.cookies['jwt-unlinked']
         
         if(!token) return res.status(400).json({message: "no token found-you're not logged in"})
             
@@ -26,7 +26,7 @@ export const protectRoute = async(req,res,next) => {
             
             return res
             .status(401)
-            .set('linkedin-Token-Expired', 'true')
+            .set('unlinked-Token-Expired', 'true')
             .json({ message: "Access token expired" });
         } else if (error.name === 'JsonWebTokenError') {
             return res.status(401).json({ message: "Invalid access token" });

@@ -19,7 +19,7 @@ connectDB()
 const allowedOrigins = [
 	"http://localhost:5173", // Vite default
 	"http://localhost:5174", // Your current dev port
-	"https://linkedin.mksinha.online", // Your production frontend
+	"https://unlinked.mksinha.info", // Your production frontend
 ];
 
 app.use(

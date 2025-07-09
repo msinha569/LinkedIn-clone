@@ -39,8 +39,8 @@ try {
         }
     
         res
-        .cookie("refresh-linkedin",refreshToken,options)
-        .cookie("jwt-linkedin",token,options)
+        .cookie("refresh-unlinked",refreshToken,options)
+        .cookie("jwt-unlinked",token,options)
         .status(201)
         .json({message:"user created successfully"})
 
@@ -80,8 +80,8 @@ export const login = async(req,res) => {
         }
     
         res
-        .cookie('jwt-linkedin',token,options)
-        .cookie('refresh-linkedin',refreshToken,options)
+        .cookie('jwt-unlinked',token,options)
+        .cookie('refresh-unlinked',refreshToken,options)
         .status(201).
         json({message: "loggedin successfully"})
     } catch (error) {
@@ -91,7 +91,7 @@ export const login = async(req,res) => {
 }
 export const logout = async(req,res) => {
     try {
-        const token = req.cookies['jwt-linkedin']
+        const token = req.cookies['jwt-unlinked']
         if(!token) return res.status(400).json({message: "user already logged out"})
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
         await User.findByIdAndUpdate(decodedToken.userId,{
@@ -109,8 +109,8 @@ export const logout = async(req,res) => {
         }
     
         res
-        .clearCookie('refresh-linkedin',options)
-        .clearCookie('jwt-linkedin',options)
+        .clearCookie('refresh-unlinked',options)
+        .clearCookie('jwt-unlinked',options)
         .status(201)
         .json({message:"user logged out successfully"})
     } catch (error) {
@@ -130,7 +130,7 @@ export const getUser = async(req,res) => {
 
 export const refreshAccessToken = async(req,res) => {    
     try {
-        const incomingRefreshToken = req.cookies['refresh-linkedin'] || req.body['refresh-linkedin']
+        const incomingRefreshToken = req.cookies['refresh-unlinked'] || req.body['refresh-unlinked']
         if (!incomingRefreshToken) return res.status(400).json({message: 'user cant persist session'})
 
         const decodedToken = jwt.verify(incomingRefreshToken, process.env.JWT_SECRET)
@@ -156,8 +156,8 @@ export const refreshAccessToken = async(req,res) => {
 
         return res
         .status(200)
-        .cookie('jwt-linkedin',token,options)
-        .cookie('refresh-linkedin',refreshToken,options)
+        .cookie('jwt-unlinked',token,options)
+        .cookie('refresh-unlinked',refreshToken,options)
         .json({message: 'token refreshed successfully'})
 
     } catch (error) {

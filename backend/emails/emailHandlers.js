@@ -11,7 +11,7 @@ export const sendWelcomeEmail = async (email, name, profileUrl) => {
     const response = await resend.emails.send({
       from: `${sender.name} <${sender.email}>`,
       to: email,
-      subject: "Welcome to LinkedIn",
+      subject: "Welcome to unlinked",
       html: createWelcomeEmailTemplate(name, profileUrl),
     })
     console.log("email sent successfully:", response)
