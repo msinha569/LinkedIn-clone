@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="800" width="1600" viewBox="-40 0 800 100">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
   <!-- Blue rectangle for 'un' -->
-  <rect x="0" y="10" width="120" height="80" rx="8" fill="#0a66c2"/>
-  <!-- White 'un' inside blue box -->
-  <text x="30" y="67" font-size="60" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">un</text>
-  
+  <rect x="100" y="200" width="400" height="400" rx="50" fill="#0a66c2" />
+
+  <!-- White 'un' inside the blue box -->
+  <text x="170" y="470" font-size="260" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">un</text>
+
   <!-- Blue 'linked' beside the box -->
-  <text x="140" y="67" font-size="60" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#0a66c2">linked</text>
+  <text x="540" y="470" font-size="260" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#0a66c2">linked</text>
 </svg>
