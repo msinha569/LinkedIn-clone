@@ -86,5 +86,17 @@ export const usePosts = (postID) => {
         enabled: !!postID,
     });
     
-    return {posts,pendingPostCreation,post, postLoading, createPostMutation, createComment, isAddingComment, likePost,isLikingPost, deletePost,isDeletingPost}
+    return {
+      posts,
+      pendingPostCreation,
+      post,
+      postLoading,
+      createPostMutation,
+      createComment,
+      isAddingComment,
+      likePost,
+      isLikingPost,
+      deletePost,
+      isDeletingPost,
+    };
 }
